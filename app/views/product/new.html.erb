@@ -1,0 +1,29 @@
+<h1>New Products</h1>
+  <% if @product.errors.any? %>
+    <u>
+      <% @product.errors.full_messages.each do |msg| %>
+        <li> <%= msg %></li>
+      <% end %>
+    </ul>
+  <% end %>
+
+  <%= form_for @product do |f| %>
+  <br>
+    <div>
+      <%= f.label :title %>
+      <%= f.text_field :title %>
+    </div>
+    <div>
+      <%= f.label :description %>
+      <%= f.text_area :description %>
+    </div>
+    <div>
+      <%= f.label :price %>
+      <%= f.text_field :price %>
+    </div>
+    <div>
+      <%= f.submit %>
+    </div>
+  <% end %>
+
+  <!-- Using form_for enables us to generate a form that will automatically submit to /products for new products so we can capture that with the create action to create new products with the parameters submitted by the user.  -->

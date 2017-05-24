@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>MyAmazon</title>
+    <%= csrf_meta_tags %>
+
+    <%= stylesheet_link_tag    'application', media: 'all' %>
+    <%= javascript_include_tag 'application' %>
+  </head>
+
+  <body>
+
+    <%= link_to('Home', home_path) %> |
+    <%= link_to('About', about_path) %> |
+    <%= link_to('Contact Us', contact_path) %> |
+    <%= link_to('All Products', products_path) %> |
+    <%= link_to('New Product', new_product_path) %>
+
+
+
+    <%= yield %>
+  </body>
+</html>
