@@ -1,5 +1,7 @@
 class Product < ApplicationRecord
+  belongs_to :category
   has_many :reviews, dependent: :destroy
+
 
   validates :title, presence: true, uniqueness: { case_sensitive: false}, exclusion: { in: %w(Apple Microsoft Sony)}
   validates :price, numericality: {greater_than_or_equal_to: 0}

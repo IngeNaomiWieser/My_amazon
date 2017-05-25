@@ -1,25 +1,41 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the rails db:seed command (or created alongside the database with db:setup).
-#
-# Examples:
-#
-#   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
-#   Character.create(name: 'Luke', movie: movies.first)
+Category.destroy_all
+Review.destroy_all
+User.destroy_all
+Product.destroy_all
 
-# 10.times do |n|
-#   Product.create(
-#     title: Faker::Hipster.sentence(3),
-#     description: Faker::Hipster.sentence(5),
-#     price: Faker::Commerce.price
-#   )
-#   puts "Product Created #{n}"
-# end
+Category.create([
+  {name: 'Science'},
+  {name: 'Music'},
+  {name: 'Arts'},
+  {name: 'Memes'},
+  {name: 'Literature'},
+  {name: 'Programming'}
+])
 
-10.times do |n|
-  User.create(
-  first_name: Faker::Name.first_name,
-  last_name: Faker::Name.last_name,
-  email: Faker::Internet.email
-  )
-puts Cowsay.say "User created #{n}", :cow   # OR: puts "Product Created #{n}"
+50.times do
+  Product.create title: Faker::Hacker.say_something_smart,
+                 description: Faker::Hipster.paragraph,
+                 price: Faker::Commerce.price
 end
+
+50.times do
+  User.create(
+    first_name: Faker::Name.first_name,
+    last_name: Faker::Name.last_name,
+    email: Faker::Internet.email
+  )
+end
+
+products = Product.all
+
+products.each do |p|
+  rand(1..5).times do
+    Review.create(
+      product_id: p.id,                  #!!! OTHERWISE IT WON'T WORK! 
+      body: Faker::Company.buzzword,
+      rating: rand(5))
+    end
+  end
+
+  puts Cowsay.say "50 users created", :cow
+  puts Cowsay.say "Created #{Review.all.count} reviews!", :ghostbusters
