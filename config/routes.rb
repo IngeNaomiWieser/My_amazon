@@ -22,7 +22,7 @@ Rails.application.routes.draw do
   delete '/products/:id', to: 'product#destroy'
 
   resources :product do
-    resources :reviews
+    resources :reviews, only: [:create, :destroy]
   end
 
 end
