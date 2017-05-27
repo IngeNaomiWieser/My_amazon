@@ -14,7 +14,7 @@ before_action :authenticate_user!
     @review = Review.new(review_params)
     @product = Product.find(params[:product_id])
     @review.product = @product
-    @product.user = current_user          # testen
+    @review.user = current_user          # testen
     if @review.save
       flash[:notice] = 'Review created'
       redirect_to @product
