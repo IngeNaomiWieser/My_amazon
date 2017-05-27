@@ -1,4 +1,6 @@
 class ReviewsController < ApplicationController
+before_action :authenticate_user!
+
   def index
   end
 
@@ -12,7 +14,7 @@ class ReviewsController < ApplicationController
     @review = Review.new(review_params)
     @product = Product.find(params[:product_id])
     @review.product = @product
-
+    @product.user = current_user          # testen
     if @review.save
       flash[:notice] = 'Review created'
       redirect_to @product

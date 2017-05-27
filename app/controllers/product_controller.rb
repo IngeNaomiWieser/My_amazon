@@ -1,5 +1,7 @@
 class ProductController < ApplicationController
 
+  before_action :authenticate_user!, except: [:index, :show]
+
   def index
     @products = Product.all
   end
@@ -16,6 +18,7 @@ class ProductController < ApplicationController
   def create
     product_params = params.require(:product).permit(:title, :description, :price, :category_id)
     @product = Product.new product_params
+    @product.user = current_user
     if @product.save
       redirect_to products_path(@product)
     else
