@@ -3,6 +3,10 @@
 <p>$<%= '%.2f' % @product.price  %></p>
 <p><%= @product.created_at  %></p>
 
+<!-- We do the &. (safe navigation operator) to make sure that we only look for
+the name when there is a category / user. If category / user is nill, it will
+return nill instead of an undefined method error. This means we don't have to write
+if (if... exists, do this...)statements. This is shorter and easier to read -->
 <p><strong>Category:</strong> <%= @product.category&.name %></p>
 <p><strong>Author:</strong> <%= @product.user&.full_name %></p>
 
@@ -14,7 +18,7 @@
 
 <h2>Reviews</h2>
 <% if @review.errors.any? %>
-<%= @review.errors.full_messages.join(', ') %>
+  <%= @review.errors.full_messages.join(', ') %>
 <% end %>
 
 <%= form_for([@product, @review]) do |f| %>

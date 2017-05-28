@@ -5,15 +5,16 @@ class WelcomeController < ApplicationController
   end
 
   def about
-  end 
+  end
 
   def contact
-
+    
   end
 
   def submit
     @name = params[:name]
     #by default this will render the submit page in the welcome folder. If you want it to come up in the contact file for example, you do render :contact
+    render :contact
   end
 
 end

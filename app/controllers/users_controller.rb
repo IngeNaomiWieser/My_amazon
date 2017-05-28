@@ -1,17 +1,18 @@
 class UsersController < ApplicationController
 
+  # users are people with an account, not necessarily logged in.
+
   def new
     @user = User.new
   end
 
-
   def create
     @user = User.new(user_params)
-    session[:user_id] = @user.id
     if @user.save
+      session[:user_id] = @user.id      # Hier zeg je: Als je een user creert, log 'm automatish in.
       redirect_to home_path, notice: 'User Created!'
     else
-      flash.now[:alert] = 'Problem Creating User'
+      flash.now[:alert] = 'Problem Creating User'       #flash now pops up once. Moet voordat je rendered.
       render :new
     end
 

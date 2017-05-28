@@ -1,9 +1,9 @@
 <h1>User Sign Page</h1>
 
-<% if @user.errors.any? %> 
+<% if @user&.errors.any? %>
   <ul>
-    <% @user.errors.full_messages.each do |msg| %>
-      <li><%= msg %> <li>
+    <% @user&.errors.full_messages.each do |msg| %>
+      <li><%= msg %> </li>
     <% end %>
   </ul>
 <% end %>

@@ -15,3 +15,7 @@
   </div>
   <%= submit_tag 'Contact Us!' %>
 <% end %>
+
+<% if @name %>
+  <p>Thank you <%= @name %> for contacting us!</p>
+<% end  %>

@@ -1,5 +1,9 @@
 class User < ApplicationRecord
 
+
+  has_many :products, dependent: :nullify #now if we destroy the user, the products will still be there
+  has_many :reviews, dependent: :nullify
+
   has_secure_password
 
   validates :first_name, presence: true
@@ -9,9 +13,6 @@ class User < ApplicationRecord
   validates :email, presence: true,
                     uniqueness: { case_sensitive: false },
                     format: VALID_EMAIL_REGEX
-
-  has_many :products, dependent: :nullify
-  has_many :reviews, dependent: :nullify
 
   def full_name
     "#{first_name} #{last_name}"
