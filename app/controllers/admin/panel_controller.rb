@@ -1,9 +1,12 @@
 class Admin::PanelController < Admin::BaseController
 
   def index
-    @products = Product.count
-    @reviews = Review.count
-    @users = User.count
+    @products_count = Product.count
+    @reviews_count = Review.count
+    @users_count = User.count
+    @users = User.order(created_at: :desc)
+    @products = Product.order(created_at: :desc)
+    @reviews = Review.order(created_at: :desc)
   end
 
 end
