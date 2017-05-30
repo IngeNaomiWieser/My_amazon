@@ -10,21 +10,28 @@ if (if... exists, do this...)statements. This is shorter and easier to read -->
 <p><strong>Category:</strong> <%= @product.category&.name %></p>
 <p><strong>Author:</strong> <%= @product.user&.full_name %></p>
 
-<%= link_to 'Edit', edit_product_path(@product) %>
 
-<%= link_to 'Delete', product_path(@product),
-                      method: :delete,
-                      data: { confirm: 'Are you sure?' } %>
-
-<h2>Reviews</h2>
-<% if @review.errors.any? %>
-  <%= @review.errors.full_messages.join(', ') %>
+<% if (can? :edit, @product) %>
+  <%= link_to 'Edit', edit_product_path(@product) %>
 <% end %>
 
-<%= form_for([@product, @review]) do |f| %>
+<% if (can? :destroy, @product) %>
+  <%= link_to 'Delete', product_path(@product),
+                      method: :delete,
+                      data: { confirm: 'Are you sure?' } %>
+<% end %>
+
+<% if current_user != @product.user %>
+  <h2>Reviews</h2>
+  <% if @review.errors.any? %>
+    <%= @review.errors.full_messages.join(', ') %>
+  <% end %>
+
+  <%= form_for([@product, @review]) do |f| %>
     <%= f.text_area :body %>
     <%= f.text_field :rating %>
     <%= f.submit :submit %>
+  <% end %>
 <% end %>
 
 <% @product.reviews.each do |review| %>
@@ -32,10 +39,12 @@ if (if... exists, do this...)statements. This is shorter and easier to read -->
     <p><strong>Author:</strong> <%= review.user&.full_name %></p>
     <p><%= review.body %></p>
     <p><%= review.rating %></p>
+    <% if can? :destroy, review %>
     <%= link_to 'Delete review',
     [@product, review], method: :delete,
     data: { confirm: 'Are you sure?'}
     %>
+    <% end %>
     <hr />
   </div>
 <% end %>

@@ -28,22 +28,36 @@ class ProductsController < ApplicationController
 
   def edit                                 #edit is get
     @product = Product.find params[:id]
-  end
-
-  def update                               #update is patch (patch is a post)
-    @product = Product.find params[:id]
-    product_params = params.require(:product).permit([:title, :description, :price, :category_id])
-    if @product.update(product_params)
-     redirect_to product_path(@product)
-    else
-     render :edit
+    unless can? :edit, @product
+      flash[:notice] = 'You cannot edit something that is not yours'
+      redirect_to @product
     end
   end
 
+  def update                               #update is patch (patch is a post)
+    product_params = params.require(:product).permit(:title, :description, :price, :category_id)
+    @product = Product.find params[:id]
+
+    if cannot? :edit, @product
+      flash[:alert] = "Access Denied. You cannot edit a product that is not yours"
+      redirect_to @product
+    elsif @product.update(product_params)
+      redirect_to @product, notice: "Successfully Updated"
+    else
+      flash.now[:alert] = "Problem Updating"
+      render :edit
+      end
+  end
+
   def destroy
-    p = Product.find params[:id]
-    p.destroy
-    redirect_to products_path
+    if can? :destroy, @product
+      p = Product.find params[:id]
+      p.destroy
+      redirect_to @product, notice: 'Product deleted'
+    else
+      flash[:alert] = 'Access denied. You can not destroy it cause it is not yours.'
+      redirect_to products_path
+    end
   end
 
 end

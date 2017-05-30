@@ -17,20 +17,19 @@
     <%= link_to('New Product', new_product_path) %> |
     <% if user_signed_in? %>
       Hello <%= current_user.first_name %> -
-      <%= link_to 'Log out', sessions_path, method: :delete #if you don't put in method: :delete it will by default do a get request instead of a delete request %>   
-      <% else %>
-      |
+      <%= link_to 'Log out', sessions_path, method: :delete %>
+    <% else %>
       <%= link_to 'Log in', new_session_path %>
       |
       <%= link_to 'Sign Up', new_user_path %>
     <% end %>
-  <hr>
+    <hr>
 
-  <% if flash[:notice] %>
-     <div class='alert alert-success'><%= flash[:notice] %></div>
-   <% elsif flash[:alert] %>
-     <div class='alert alert-danger'><%= flash[:alert] %></div>
-  <% end %>
+    <% if flash[:notice] %>
+       <div class='alert alert-success'><%= flash[:notice] %></div>
+     <% elsif flash[:alert] %>
+       <div class='alert alert-danger'><%= flash[:alert] %></div>
+    <% end %>
 
     <%= yield %>
   </body>
