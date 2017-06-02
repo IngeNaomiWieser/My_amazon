@@ -6,7 +6,6 @@ class Admin::PanelController < Admin::BaseController
     @users_count = User.count
     @users = User.order(created_at: :desc)
     @products = Product.order(created_at: :desc)
-    @reviews = Review.order(created_at: :desc)
   end
 
 end
