@@ -20,8 +20,10 @@ class ProductsController < ApplicationController
     @product = Product.new product_params      # @product is an instance variable that we can use in the views. Without @ the views don't know that you mean.
     @product.user = current_user               # Here you assign a user to the product. You get a user from the session.
     if @product.save                           # Als de validations goed zijn kun je saven. Dan
-      redirect_to products_path                # products_path is the index-action from the products controller
+      flash[:notice] = 'Product created'
+      redirect_to @product                     # products_path is the index-action from the products controller
     else
+      flash[:alert] = 'Problem creating your product'
       render :new                              # niet gelukt om te saven, gaat terug naar dezelfde pagina and you keep the information
     end
   end
