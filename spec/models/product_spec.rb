@@ -11,6 +11,8 @@ RSpec.describe Product, type: :model do
   end
 
   describe "validation" do
+    let (:user) {FactoryGirl.create(:user)}
+
     context "title" do
       it "requires a title" do
         product = Product.new(  valid_attributes({ title: nil })  )
@@ -24,8 +26,8 @@ RSpec.describe Product, type: :model do
         expect(product2).to be_invalid
       end
 
-      it "titleizes the title after getting saved" do
-        product = Product.new(valid_attributes(title: 'ice cream'))
+      it "titleizes the title before getting saved" do
+        product = Product.new(valid_attributes(title: 'ice cream', user: user))
         product.save
         expect(product.title).to eq('Ice Cream')
       end
@@ -43,17 +45,16 @@ RSpec.describe Product, type: :model do
       it "requires a description" do
         product = Product.new(valid_attributes({ description: '' }))
         product.valid?
-
-        expect(product.errors[:description]).to be
+        # expect(product.errors[:description]).to be
         expect(product.errors.has_key?(:description)).to eq(true)
       end
     end
 
     context "price" do
       it "requires a price" do
-        product = Product.new(valid_attributes({ price: '' }))
+        product = Product.new(valid_attributes({ price: -1 }))
         product.valid?
-        expect(product.errors[:price]).to be
+        expect(product.errors.has_key?(:price)).to eq(true)
       end
 
       it "is more than 0" do

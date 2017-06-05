@@ -37,7 +37,7 @@ class Product < ApplicationRecord
   end
 
   def titleize_title
-    self.title = title.titleize
+    self.title = self.title.titleize
   end
 
   def warning

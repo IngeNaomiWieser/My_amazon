@@ -6,14 +6,17 @@ class Ability
     #
       user ||= User.new # guest user (not logged in)
 
+      # Alleen de maker van het product dan het product updaten en verwijderen
       can [:edit, :update, :destroy], Product do |product|
         user == product.user
       end
 
+      # Alleen de maker van de review kan de review verwijderen
       can :destroy, Review do |review|
         review.user == user
       end
 
+      #Degene die het product gecreerd heeft, kan geen review creeren.
       can :create, Review do |review|
         user != review.product.user
       end
