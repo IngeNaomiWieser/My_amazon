@@ -1,21 +1,24 @@
 class User < ApplicationRecord
 
-
-  has_many :products, dependent: :nullify #now if we destroy the user, the products will still be there
-  has_many :reviews, dependent: :nullify
-
   has_secure_password
+
+  VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i
+
+  has_many :products, dependent: :nullify
+  has_many :reviews, dependent: :nullify
 
   validates :first_name, presence: true
   validates :last_name, presence: true
+  validates :email, presence: true, uniqueness: true, format: VALID_EMAIL_REGEX
 
-  VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i
-  validates :email, presence: true,
-                    uniqueness: { case_sensitive: false },
-                    format: VALID_EMAIL_REGEX
+  before_validation :downcase_email
 
   def full_name
-    "#{first_name} #{last_name}"
+    "#{first_name} #{last_name}".strip.titleize
+  end
+
+  def downcase_email
+    self.email&.downcase!
   end
 
   # def self.search(string)

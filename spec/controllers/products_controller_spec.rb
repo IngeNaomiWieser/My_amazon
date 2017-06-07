@@ -23,6 +23,7 @@ RSpec.describe ProductsController, type: :controller do
     context "with user signed in" do
       # met onderstaande check je of iemand ingelogd is.
       before { request.session[:user_id] = user.id }
+      before
 
       it "assign a product instance variable to be a new Product" do
         get :new
@@ -46,7 +47,8 @@ RSpec.describe ProductsController, type: :controller do
     end
 
     context "with signed in user" do
-      before { request.session[:user_id] = user.id }
+      # before { request.session[:user_id] = user.id }
+      before {log_in(user)}
 
       context "with valid attributes" do
 
