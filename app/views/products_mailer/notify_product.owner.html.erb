@@ -1,0 +1,10 @@
+<h3> Hello <%= @user.full_name %>, </h3>
+<p> You've created a product on our website. This is the particular product you created: </p>
+
+<p> Product title: <%= @product.title %> </p>
+<p> Product description: <%= @product.description %> </p>
+<p> Product price: <%= @product.price  %> </p>
+<p> Product sale price: <%= @product.sale_price  %> </p>
+<p> You can find the link to your product here:  <%= link_to('New Product', product_url(@product)) %></p>
+
+<p> Regards, The My_Amazon Team </p>

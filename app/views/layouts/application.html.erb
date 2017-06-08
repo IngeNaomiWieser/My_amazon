@@ -17,7 +17,7 @@
     <%= link_to('New Product', new_product_path) %> |
     <% if user_signed_in? %>
       Hello <%= current_user.first_name %> -
-      <%= link_to 'Log out', sessions_path, method: :delete %>
+      <%= link_to 'Log out', sessions_path %>
     <% else %>
       <%= link_to 'Log in', new_session_path %>
       |

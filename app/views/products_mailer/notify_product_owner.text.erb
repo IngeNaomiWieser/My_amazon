@@ -1,0 +1,10 @@
+Hello <%= @user.first_name %>,
+You've created a product on our website. This is the particular product you created:
+
+Product title: <%= @product.title %>
+Product description: <%= @product.description %>
+Product price: <%= @product.price  %>
+Product sale price: <%= @product.sale_price  %>
+You can find the link to your product here: <%= product_url(@product) %>
+
+Regards, The My_Amazon Team
