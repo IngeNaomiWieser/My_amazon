@@ -7,16 +7,22 @@ class ReviewsController < ApplicationController
     @review.product = @product    #Now you say: this review belongs to this product. You also need 'belongs_to' in the model
     @review.user = current_user          #de user that makes the review is the logged in user. It gets an author so to say. (Also in the model)
 
-    if cannot? :create, @review
-      flash[:alert] = "Access denied. You cannot create a review for your own product!"
-      redirect_to @product
-    elsif @review.save
+    if can? :create, @review.save
       flash[:notice] = 'Review created'
-      redirect_to @product          # @product tells rails that we mean: product_path(@product) (showpage)
     else
       flash[:notice] = 'Problem creating review'
-      render 'product/show'
     end
+      redirect_to @product
+    # if can? :create, @review
+    #   flash[:alert] = "Access denied. You cannot create a review for your own product!"
+    #   redirect_to @product
+    # elsif @review.save
+    #   flash[:notice] = 'Review created'
+    #   redirect_to @product          # @product tells rails that we mean: product_path(@product) (showpage)
+    # else
+    #   flash[:notice] = 'Problem creating review'
+    #   render 'product/show'
+    # end
   end
 
   def destroy

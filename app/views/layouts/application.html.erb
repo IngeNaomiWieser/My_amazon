@@ -14,7 +14,12 @@
     <%= link_to('About', about_path) %> |
     <%= link_to('Contact Us', contact_path) %> |
     <%= link_to('All Products', products_path) %> |
-    <%= link_to('New Product', new_product_path) %> |
+    <% if user_signed_in? %>
+    <%= link_to 'My Liked Products', user_liked_products_path(current_user) %>
+    |
+    <% end %>
+    <%= link_to 'Tags', tags_path %> |
+    <%= link_to 'New Product', new_product_path %> |
     <% if user_signed_in? %>
       Hello <%= current_user.first_name %> -
       <%= link_to 'Log out', sessions_path %>

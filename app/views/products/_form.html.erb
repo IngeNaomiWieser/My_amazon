@@ -8,29 +8,40 @@
 
 <%= form_for @product do |f| %>
 <br>
-  <div class="form-group">
-    <%= f.label :title %>
-    <%= f.text_field :title, class: 'form-control' %>
-  </div>
-  <div class="form-group">
-    <%= f.label :description %>
-    <%= f.text_area :description, class: 'form-control' %>
-  </div>
-  <div class="form-group">
-    <%= f.label :price %>
-    <%= f.text_field :price, class: 'form-control' %>
-  </div>
-  <div class="form-group">
-    <%= f.label :category %>
-    <%= f.collection_select :category_id,
-     Category.all,
-      :id,
-      :name,
-      include_blank: true,
-      prompt: 'Choose a category'
-      %>
-  </div>
-  <div>
-    <%= f.submit class: 'btn btn-primary' %>
+  <div class="well">
+    <div class="form-group">
+      <%= f.label :title %>
+      <%= f.text_field :title, class: 'form-control' %>
+    </div>
+    <div class="form-group">
+      <%= f.label :description %>
+      <%= f.text_area :description, class: 'form-control' %>
+    </div>
+    <div class="form-group">
+      <%= f.label :price %>
+      <%= f.text_field :price, class: 'form-control' %>
+    </div>
+    <div class="form-group">
+      <%= f.label :tag_ids %>
+      <%= f.collection_check_boxes :tag_ids, Tag.all, :id, :name do |b| %>
+        <div class="tag-wrapper">
+          <%= b.check_box %>
+          <%= b.text %>
+        </div>
+      <% end %>
+    </div>
+    <div class="form-group">
+      <%= f.label :category %>
+      <%= f.collection_select :category_id,
+       Category.all,
+        :id,
+        :name,
+        include_blank: true,
+        prompt: 'Choose a category'
+        %>
+    </div>
+    <div>
+      <%= f.submit class: 'btn btn-primary' %>
+    </div>
   </div>
 <% end %>

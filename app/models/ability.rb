@@ -21,6 +21,21 @@ class Ability
         user != review.product.user
       end
 
+      can :favourite, Product do |product|
+        product.user != user
+      end
+
+      cannot :favourite, Product do |product|
+        product.user == user
+      end
+
+      can :like, Review do |review|
+          review.user != user
+        end
+
+        cannot :like, Review do |review|
+          review.user == user
+        end
     #   if user.admin?
     #     can :manage, :all
     #   else

@@ -25,4 +25,8 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def pretty_errors
+    self.errors.full_messages.join(', ')
+  end
+
 end

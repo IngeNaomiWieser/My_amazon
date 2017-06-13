@@ -7,6 +7,15 @@ class User < ApplicationRecord
   has_many :products, dependent: :nullify
   has_many :reviews, dependent: :nullify
 
+  has_many :favourites, dependent: :destroy
+  has_many :favourited_products, through: :favourites, source: :product
+
+  has_many :likes, dependent: :destroy
+  has_many :liked_reviews, through: :likes, source: :review
+
+  has_many :votes, dependent: :destroy
+  has_many :voted_reviews, through: :votes, source: :review 
+
   validates :first_name, presence: true
   validates :last_name, presence: true
   validates :email, presence: true, uniqueness: true, format: VALID_EMAIL_REGEX

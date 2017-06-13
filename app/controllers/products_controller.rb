@@ -1,14 +1,30 @@
 class ProductsController < ApplicationController
-
   before_action :authenticate_user!, except: [:index, :show]
 
   def index
-    @products = Product.all               #zie '@products in je view/product/index'. Dat wordt hier gedefinieerd.
+    # @products = Product.all               #zie '@products in je view/product/index'. Dat wordt hier gedefinieerd.
+    if params.has_key? :user_id
+      @user = User.find(params[:user_id])
+      @products = current_user.favourited_products.order(created_at: :desc)
+    else
+      @products = Product.recent(30)
+    end
   end
+
+  def liked_products
+    @user = User.find params[:user_id]
+    @products = @user.favourited_products.order(created_at: :desc)
+    render :index
+  end
+
 
   def show
     @product = Product.find params[:id]
     @review = Review.new
+    @reviews = @product.reviews.order(created_at: :desc)
+    @favourite = @product.favourites.find_by(user: current_user)
+    @like = @review.likes.find_by(user: current_user)
+    # @vote = @review.votes.find_by(user: current_user) 
   end
 
   def new              # you don't specify where it should render to, so it assumes it has to go to the vies/product/new
@@ -16,7 +32,7 @@ class ProductsController < ApplicationController
   end
 
   def create               #post request
-    product_params = params.require(:product).permit(:title, :description, :price, :category_id)       #defining the params you permit
+    # product_params = params.require(:product).permit(:title, :description, :price, :category_id)       #defining the params you permit
     @product = Product.new product_params      # @product is an instance variable that we can use in the views. Without @ the views don't know that you mean.
     @product.user = current_user               # Here you assign a user to the product. You get a user from the session.
     if @product.save                           # Als de validations goed zijn kun je saven. Dan
@@ -37,7 +53,7 @@ class ProductsController < ApplicationController
   end
 
   def update                               #update is patch (patch is a post)
-    product_params = params.require(:product).permit(:title, :description, :price, :category_id)
+    # product_params = params.require(:product).permit(:title, :description, :price, :category_id)
     @product = Product.find params[:id]
 
     if cannot? :edit, @product
@@ -61,5 +77,11 @@ class ProductsController < ApplicationController
       redirect_to products_path
     end
   end
+
+  private
+
+    def product_params
+      params.require(:product).permit([:title, :description, :price, :category_id, { tag_ids: [] }])
+    end
 
 end

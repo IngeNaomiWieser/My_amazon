@@ -10,6 +10,12 @@ class Product < ApplicationRecord
   belongs_to :category, optional: true     # with optional true, you can leave it blanco
   has_many :reviews, dependent: :destroy    #dependent: :destroy: -> if you delete the product, you will also delete the reviews that belong to it.
 
+  has_many :favourites, dependent: :destroy
+  has_many :admirers, through: :favourites, source: :user
+
+  has_many :taggings, dependent: :destroy
+  has_many :tags, through: :taggings 
+
   validates :title, presence: true, uniqueness: { case_sensitive: false}, exclusion: { in: %w(Apple Microsoft Sony)}
   validates :price, numericality: {greater_than_or_equal_to: 0}
   validates :description, length: { minimum: 10, message: 'not long enough' }
@@ -26,6 +32,10 @@ class Product < ApplicationRecord
   def increment_hit_count
     self.hit_count += 1
     self.save
+  end
+
+  def self.recent(number)
+    order(created_at: :desc).limit(number)
   end
 
   private
